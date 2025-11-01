@@ -1,5 +1,6 @@
 "use client"
 import { useState } from "react";
+import Link from "next/link";
 
 const SignUp = () => {
     const [email, setEmail] = useState("");
@@ -61,6 +62,14 @@ const SignUp = () => {
                     Sign Up
                 </button>
             </form>
+            <div className="mt-4 text-center">
+                <span className="text-sm text-gray-600 dark:text-gray-300">
+                    Already have an account?{" "}
+                    <Link href="/login" className="text-purple-600 hover:text-purple-500">
+                        Login here
+                    </Link>
+                </span>
+            </div>
         </div>
     );
 };

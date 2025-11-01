@@ -1,3 +1,4 @@
+import Link from "next/link";
 import SignUp from "../components/SignUp";
 
 export default function(){
