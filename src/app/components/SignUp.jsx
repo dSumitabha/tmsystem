@@ -2,16 +2,54 @@
 import { useState } from "react";
 import Link from "next/link";
 
-const SignUp = () => {
-    const [email, setEmail] = useState("");
-    const [fullName, setFullName] = useState("");
-    const [password, setPassword] = useState("");
+    const SignUp = () => {
+        const [email, setEmail] = useState("");
+        const [fullName, setFullName] = useState("");
+        const [password, setPassword] = useState("");
+        const [errorMessage, setErrorMessage] = useState("");
+        const [loading, setLoading] = useState(false);
+    
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // I need to add the sign up api here while develope the backend
-        console.log("Sign Up Submitted with:", email, fullName, password);
+        const handleSubmit = async (e) => {
+            e.preventDefault();
+        
+            // Basic validation (can be expanded)
+            if (!email || !fullName || !password) {
+                setErrorMessage('Please fill in all fields');
+                return;
+            }
+        
+            setLoading(true);
+            setErrorMessage('');
+        
+            try {
+                const response = await fetch('/api/sign-up', {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                    email,
+                    fullname: fullName, 
+                    password,
+                    }),
+                });
+            
+                const result = await response.json();
+            
+                if (response.ok) {
+                    console.log('User registered:', result);
+                    // I need to redirect to the relavant page with the token 
+                } else {
+                    setErrorMessage(result.error || 'Something went wrong');
+                }
+            } catch (error) {
+                setErrorMessage('Registration failed, please try again');
+            } finally {
+                setLoading(false);
+            }
     };
+    
 
     return (
         <div className="w-full max-w-md p-8 space-y-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg">
@@ -57,9 +95,9 @@ const SignUp = () => {
                         placeholder="Enter your password"
                     />
                 </div>
-
-                <button type="submit" className="w-full py-2 px-4 bg-gradient-to-r from-purple-600 via-purple-700 to-pink-500 text-white rounded-md hover:bg-gradient-to-l focus:outline-none focus:ring-2 focus:ring-purple-600 dark:hover:bg-gradient-to-l dark:focus:ring-purple-400">
-                    Sign Up
+                {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+                <button type="submit" className="w-full py-2 px-4 bg-gradient-to-r from-purple-600 via-purple-700 to-pink-500 text-white rounded-md hover:bg-gradient-to-l focus:outline-none focus:ring-2 focus:ring-purple-600 dark:hover:bg-gradient-to-l dark:focus:ring-purple-400" disabled={loading}>
+                    {loading ? 'Loading...' : 'Sign Up'}
                 </button>
             </form>
             <div className="mt-4 text-center">
