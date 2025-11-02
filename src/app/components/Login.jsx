@@ -5,11 +5,44 @@ import Link from "next/link";
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
     
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // I will add the api here while develope the backend
-        console.log("Login submitted with", email, password);
+        setLoading(true);
+        setError(''); 
+    
+        // Prepare the data to be sent in the request body
+        const loginData = { email, password };
+    
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(loginData),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Handle successful login
+                console.log('Login successful:', data);
+                // Optionally, you can store the token if you want (but here it's being set in cookies)
+                // localStorage.setItem('token', data.token);  // Avoid storing tokens in localStorage
+            } else {
+                // Handle errors (invalid email, password, etc.)
+                setError(data.error || 'Something went wrong');
+            }
+        } catch (error) {
+            // Handle fetch or network errors
+            console.error('Login error:', error);
+            setError('Login failed. Please try again later.');
+        } finally {
+            setLoading(false); // Reset loading state
+        }
     };
     
     return (
@@ -47,9 +80,9 @@ const Login = () => {
                     placeholder="Enter your password"
                     />
                 </div>
-    
-                <button type="submit" className="w-full py-2 px-4 bg-gradient-to-r from-purple-600 via-purple-700 to-pink-500 text-white rounded-md hover:bg-gradient-to-l focus:outline-none focus:ring-2 focus:ring-purple-600 dark:hover:bg-gradient-to-l dark:focus:ring-purple-400">
-                    Log In
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+                <button type="submit" className="w-full py-2 px-4 bg-gradient-to-r from-purple-600 via-purple-700 to-pink-500 text-white rounded-md hover:bg-gradient-to-l focus:outline-none focus:ring-2 focus:ring-purple-600 dark:hover:bg-gradient-to-l dark:focus:ring-purple-400" disabled={loading}>
+                    {loading ? 'Logging in...' : 'Login'}
                 </button>
             </form>
             <div className="mt-4 text-center">
