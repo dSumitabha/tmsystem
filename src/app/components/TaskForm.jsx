@@ -1,16 +1,19 @@
 "use client";
 import { useState } from "react";
 
-export default function TaskForm() {
-    const [formData, setFormData] = useState({
-        taskId: "",
-        title: "",
-        description: "",
-        assignedTo: "",
-        status: "pending",
-        priority: "medium",
-        dueDate: ""
-    });
+export default function TaskForm({ existingTask }) {
+    const isEditMode = !!existingTask;
+    const [formData, setFormData] = useState(
+        existingTask || {
+            taskId: "",
+            title: "",
+            description: "",
+            assignedTo: "",
+            status: "pending",
+            priority: "medium",
+            dueDate: ""
+        }
+    );
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -28,7 +31,9 @@ export default function TaskForm() {
             dueDate: ""
         });
 
-        console.log("Submitting New Tasks ", formData)
+        console.log("Submitting New Tasks ", formData);
+
+        // i need to handle the submit api based on the isEditMode here
     };
 
     return (
