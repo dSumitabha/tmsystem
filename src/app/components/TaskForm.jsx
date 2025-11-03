@@ -21,20 +21,50 @@ export default function TaskForm({ existingTask }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setFormData({
-            taskId: "",
-            title: "",
-            description: "",
-            assignedTo: "",
-            status: "pending",
-            priority: "medium",
-            dueDate: ""
-        });
-
-        console.log("Submitting New Tasks ", formData);
-
-        // i need to handle the submit api based on the isEditMode here
-    };
+    
+        try {
+            const url = isEditMode
+                ? `/api/tasks/${formData.taskId}`   // Update existing
+                : `/api/tasks`;                     // Create new
+    
+            const method = isEditMode ? "PUT" : "POST";
+    
+            console.log(`${isEditMode ? "Updating" : "Creating"} task →`, formData);
+    
+            const res = await fetch(url, {
+                method,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData),
+            });
+    
+            const result = await res.json();
+    
+            if (!res.ok) {
+                console.error("Error:", result.error);
+                alert(result.error || "Failed to save task");
+                return;
+            }
+    
+            alert(isEditMode ? "Task updated successfully!" : "Task created successfully!");
+    
+            // reset only after successful creation (not edit)
+            if (!isEditMode) {
+                setFormData({
+                    taskId: "",
+                    title: "",
+                    description: "",
+                    assignedTo: "",
+                    status: "pending",
+                    priority: "medium",
+                    dueDate: "",
+                });
+            }
+    
+        } catch (err) {
+            console.error("Submit error:", err);
+            alert("An unexpected error occurred while saving the task");
+        }
+    };    
 
     return (
         <div className="min-h-screen w-full px-6 py-6 bg-slate-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
