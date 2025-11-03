@@ -37,10 +37,10 @@ export default function TaskForm({ existingTask }) {
     };
 
     return (
-        <div className="min-h-screen w-full px-6 py-10 bg-slate-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+        <div className="min-h-screen w-full px-6 py-6 bg-slate-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
             <div className="max-w-6xl mx-auto">
-                <h1 className="text-3xl font-semibold mb-8">Create New Task</h1>
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <h1 className="text-2xl font-semibold mb-4">Create New Task</h1>
+                <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="grid lg:grid-cols-12 gap-4">
                         <div className="lg:col-span-4">
                             <label className="block mb-2 font-medium">Task ID</label>
