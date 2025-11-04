@@ -60,7 +60,7 @@ export async function POST(request) {
                 return NextResponse.json({ error: "Assigned user not found" }, { status: 404 });
             }
         }
-console.log(userId, body.assignedTo)
+
         const newTask = await Task.create({
             taskId: body.taskId.trim(),
             title: body.title.trim(),
