@@ -1,6 +1,7 @@
 "use client"
 import { useState } from "react";
 import Link from "next/link";
+import { toast } from 'sonner';
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -30,16 +31,19 @@ const Login = () => {
             if (response.ok) {
                 // Handle successful login
                 console.log('Login successful:', data);
+                toast.success('Login successful!');
                 // Optionally, you can store the token if you want (but here it's being set in cookies)
                 // localStorage.setItem('token', data.token);  // Avoid storing tokens in localStorage
             } else {
                 // Handle errors (invalid email, password, etc.)
-                setError(data.error || 'Something went wrong');
+                // setError(data.error || 'Something went wrong');
+                toast.error(data.error || 'Something went wrong');
             }
         } catch (error) {
             // Handle fetch or network errors
             console.error('Login error:', error);
-            setError('Login failed. Please try again later.');
+            // setError('Login failed. Please try again later.');
+            toast.error('Login failed. Please try again later.',);
         } finally {
             setLoading(false); // Reset loading state
         }
