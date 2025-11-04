@@ -30,7 +30,7 @@ import Link from "next/link";
                     },
                     body: JSON.stringify({
                     email,
-                    fullname: fullName, 
+                    fullName,
                     password,
                     }),
                 });
