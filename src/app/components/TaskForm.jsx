@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import AssignUser from "./AssignUser";
 
 export default function TaskForm({ existingTask }) {
     const isEditMode = !!existingTask;
@@ -14,6 +15,20 @@ export default function TaskForm({ existingTask }) {
             dueDate: ""
         }
     );
+
+    const handleSelectUser = (user) => {
+        if (!user) {
+          // if user is cleared
+          setFormData((prev) => ({ ...prev, assignedTo: "" }));
+          return;
+        }
+      
+        setFormData((prev) => ({
+          ...prev,
+          assignedTo: user._id, // store user ID for backend
+        }));
+    };
+      
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -97,6 +112,10 @@ export default function TaskForm({ existingTask }) {
                         </div>
                     </div>
                     
+                    <AssignUser
+          selectedUser={formData.assignedTo}
+          onSelectUser={handleSelectUser}
+        />
                     <div>
                         <label className="block mb-2 font-medium">Description</label>
                         <textarea
