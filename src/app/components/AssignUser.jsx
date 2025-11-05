@@ -11,28 +11,28 @@ export default function AssignUser({ selectedUser, onSelectUser }) {
 
     // live search logic,I need to implement debounce here
     useEffect(() => {
-    if (query === "") {
-        setUsers([]);
-        return;
-    }
-
-    const fetchUsers = async () => {
-        setIsLoading(true);
-        setError(null);
-        try {
-            const response = await fetch(`/api/users?search=${encodeURIComponent(query)}`);
-            if (!response.ok) throw new Error("Failed to fetch users");
-            const data = await response.json();
-            setUsers(data.users || []);
-        } catch (err) {
-            setError(err.message);
-            toast.error(`Error: ${err.message}`);
-        } finally {
-            setIsLoading(false);
+        if (query === "") {
+            setUsers([]);
+            return;
         }
-    };
 
-    fetchUsers();
+        const fetchUsers = async () => {
+            setIsLoading(true);
+            setError(null);
+            try {
+                const response = await fetch(`/api/users?search=${encodeURIComponent(query)}`);
+                if (!response.ok) throw new Error("Failed to fetch users");
+                const data = await response.json();
+                setUsers(data.users || []);
+            } catch (err) {
+                setError(err.message);
+                toast.error(`Error: ${err.message}`);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchUsers();
     }, [query]);
 
     return (
@@ -47,35 +47,35 @@ export default function AssignUser({ selectedUser, onSelectUser }) {
                 />
 
                 {isLoading && (
-                <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg">
-                    <p className="text-gray-500 p-2">Loading...</p>
-                </div>
+                    <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg">
+                        <p className="text-gray-500 p-2">Loading...</p>
+                    </div>
                 )}
 
                 {error && !isLoading && (
-                <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg">
-                    <p className="text-red-500 p-2">Error: {error}</p>
-                </div>
+                    <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg">
+                        <p className="text-red-500 p-2">Error: {error}</p>
+                    </div>
                 )}
 
                 {!isLoading && users.length > 0 && (
-                <ComboboxOptions className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg max-h-60 overflow-auto">
-                    {users.map((user) => (
-                    <ComboboxOption
-                        key={user._id}
-                        value={user}
-                        className="data-[focus]:bg-purple-700 data-[focus]:text-white text-gray-900 dark:text-gray-100 block px-4 py-2 cursor-pointer"
-                    >
-                        {user.fullName}
-                    </ComboboxOption>
-                    ))}
-                </ComboboxOptions>
+                    <ComboboxOptions className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg max-h-60 overflow-auto">
+                        {users.map((user) => (
+                        <ComboboxOption
+                            key={user._id}
+                            value={user}
+                            className="data-[focus]:bg-purple-700 data-[focus]:text-white text-gray-900 dark:text-gray-100 block px-4 py-2 cursor-pointer"
+                        >
+                            {user.fullName}
+                        </ComboboxOption>
+                        ))}
+                    </ComboboxOptions>
                 )}
 
                 {!isLoading && query !== "" && users.length === 0 && (
-                <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg">
-                    <p className="text-gray-500 p-2">No users found</p>
-                </div>
+                    <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg">
+                        <p className="text-gray-500 p-2">No users found</p>
+                    </div>
                 )}
             </div>
         </Combobox>
