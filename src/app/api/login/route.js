@@ -33,7 +33,7 @@ export async function POST(request) {
 
     const secret = new TextEncoder().encode(process.env.JWT_SECRET); // Encode the secret
     // Creating a JWT token with role isAdmin
-    const token = await new SignJWT({ userId: user._id, email: user.email, isAdmin: user.isAdmin })
+    const token = await new SignJWT({ userId: user._id.toString(), email: user.email, isAdmin: user.isAdmin })
                               .setProtectedHeader({ alg: 'HS256' }) // using HS256 the common algorithm 
                               .setExpirationTime('1d')
                               .sign(secret);
