@@ -8,6 +8,7 @@ export const AssignUserProvider = ({ children }) => {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [selectedUser, setSelectedUser] = useState(null);
 
 
     // fetch some users at initial load, later I can use recomandation logic
@@ -34,7 +35,7 @@ export const AssignUserProvider = ({ children }) => {
     }, []);
 
     return (
-        <AssignUserContext.Provider value={{users, isLoading, error, setUsers}}>
+        <AssignUserContext.Provider value={{users, isLoading, error, setUsers, selectedUser, setSelectedUser}}>
             {children}
         </AssignUserContext.Provider>
     );

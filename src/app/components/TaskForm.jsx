@@ -124,7 +124,7 @@ export default function TaskForm({ existingTask }) {
                     </div>
                     <div className="grid md:grid-cols-2 gap-6">
                         <AssignUser
-                            selectedUser={formData.assignedTo} 
+                            selectedUserId={formData.assignedTo} 
                             onSelectUser={handleSelectUser} 
                         />
                         <div>

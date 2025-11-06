@@ -4,16 +4,16 @@ import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from "@headl
 import { toast } from "sonner";
 import { useAssignUserContext } from "../context/AssignUserContext";
 
-export default function AssignUser({ selectedUser, onSelectUser }) {
+export default function AssignUser({ selectedUserId, onSelectUser }) {
     const [query, setQuery] = useState("");
-    const { users, setUsers } = useAssignUserContext(); // already defined it in the provider
+    const { users, setUsers, selectedUser, setSelectedUser } = useAssignUserContext(); // already defined it in the provider
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
     // live search logic,I need to implement debounce here
     useEffect(() => {
         if (query === "") {
-            setUsers([]);
+            // setUsers([]);
             return;
         }
 
@@ -36,8 +36,14 @@ export default function AssignUser({ selectedUser, onSelectUser }) {
         fetchUsers();
     }, [query]);
 
+    const selectedUserObj = users.find((user) => user._id === selectedUserId) || selectedUser;
+
+
     return (
-        <Combobox value={selectedUser || {}} onChange={onSelectUser} >
+        <Combobox value={selectedUserObj || {}} onChange={(user) => {
+            setSelectedUser(user);  //storing the full user object
+            onSelectUser(user);  // this is to passing the object to parent
+        }}>
             <div className="relative">
                 <label className="block mb-2 font-medium">Assigned To</label>
                 <ComboboxInput
