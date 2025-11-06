@@ -29,7 +29,7 @@ export async function GET(request, { params }) {
       .populate('createdBy', 'fullName email')   // relation with user
       .populate('assignedTo', 'fullName email'); // ;
 
-    // If no tasks are found, return a message indicating that
+    // return a message if no tasks are found
     if (tasks.length === 0) {
       return NextResponse.json(
         { message: 'No tasks assigned to this user' },
@@ -37,13 +37,11 @@ export async function GET(request, { params }) {
       );
     }
 
-    // Create a JWT token (optional, if you need to authenticate requests)
     const token = await new SignJWT({ userId: user._id.toString(), email: user.email, isAdmin: user.isAdmin })
       .setProtectedHeader({ alg: 'HS256' }) // HS256 for the JWT algorithm
       .setExpirationTime('1d')
       .sign(secret);
 
-    // Return the tasks with the JWT token (if you want to include it in the response)
     return NextResponse.json({ tasks, token }, { status: 200 });
   } catch (error) {
     console.error('Error fetching tasks for user:', error);

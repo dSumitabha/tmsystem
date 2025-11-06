@@ -13,6 +13,10 @@ export async function GET(request, { params }) {
 
     // Destructure the user ID from the params
     const { id } = await params;
+    const searchParams = request.nextUrl.searchParams;
+
+    const assignedTo = searchParams.get('assignedTo');
+    const status = searchParams.get('status');
 
     // Find the user by ID (optional: ensure the user exists before proceeding)
     const user = await User.findById(id);
@@ -24,26 +28,32 @@ export async function GET(request, { params }) {
       );
     }
 
+    // base query will execute without parametes
+    const query = { createdBy: id };
+
+    // will use this to filters
+    if (assignedTo) query.assignedTo = assignedTo;
+    if (status) query.status = status;
+
     // Query tasks assigned to the user
-    const tasks = await Task.find({ createdBy : id })
+    const tasks = await Task.find(query)
         .populate('createdBy', 'fullName email')   // relation with user
         .populate('assignedTo', 'fullName email'); // 
 
-    // If no tasks are found, return a message indicating that
+    // message indicating that no tasks were found
     if (tasks.length === 0) {
       return NextResponse.json(
-        { message: 'No tasks assigned to this user' },
+        { message: 'No tasks created by this user' },
         { status: 404 }
       );
     }
 
-    // Create a JWT token (optional, if you need to authenticate requests)
+    
     const token = await new SignJWT({ userId: user._id.toString(), email: user.email, isAdmin: user.isAdmin })
       .setProtectedHeader({ alg: 'HS256' }) // HS256 for the JWT algorithm
       .setExpirationTime('1d')
       .sign(secret);
 
-    // Return the tasks with the JWT token (if you want to include it in the response)
     return NextResponse.json({ tasks, token }, { status: 200 });
   } catch (error) {
     console.error('Error fetching tasks for user:', error);
