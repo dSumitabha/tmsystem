@@ -1,10 +1,20 @@
-
+import { getUserFromToken } from '@/lib/getUserFromToken';
 import AdminDashboard from "./components/AdminDashboard";
 import UserDashboard from "./components/UserDashboard";
 
-export default function Home() {
-	const isAdmin = false;
+export default async function Home() {
+	const user = await getUserFromToken();
 
+	if (!user) {
+	  // middleware missed edge case
+	  return (
+		<div className="flex items-center justify-center min-h-screen text-white">
+		  Unauthorized
+		</div>
+	  );
+	}
+
+	const isAdmin = user?.isAdmin || false;
 
 	return (
 		<>
