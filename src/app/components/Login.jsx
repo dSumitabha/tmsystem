@@ -12,41 +12,44 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        setError(''); 
+        setError('');
     
         // Prepare the data to be sent in the request body
         const loginData = { email, password };
     
-        try {
-            const response = await fetch('/api/login', {
+        // Use toast.promise to handle loading, success, and error states
+        toast.promise(
+            fetch('/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(loginData),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                // Handle successful login
-                console.log('Login successful:', data);
-                toast.success('Login successful!');
-                // Optionally, you can store the token if you want (but here it's being set in cookies)
-                // localStorage.setItem('token', data.token);  // Avoid storing tokens in localStorage
-            } else {
-                // Handle errors (invalid email, password, etc.)
-                // setError(data.error || 'Something went wrong');
-                toast.error(data.error || 'Something went wrong');
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                setLoading(false);
+                if (data.token) {
+                    // Handle successful login
+                    console.log('Login successful:', data);
+                    return data; // to toast the sooner
+                } else {
+                    throw new Error(data.error || 'Something went wrong');
+                }
+            })
+            , {
+                loading: 'Logging in...', // Display while waiting for response
+                success: 'Login successful!', // On successful login
+                error: (error) => error.message || 'Login failed. Please try again later.', // On error
             }
-        } catch (error) {
-            // Handle fetch or network errors
+        )
+        .catch((error) => {
+            // Handle any other errors (network issues, etc.)
             console.error('Login error:', error);
-            // setError('Login failed. Please try again later.');
-            toast.error('Login failed. Please try again later.',);
-        } finally {
-            setLoading(false); // Reset loading state
-        }
+        })
+        .finally(() => {
+            setLoading(false); // Reset loading state after the operation
+        });
     };
     
     return (
@@ -85,7 +88,13 @@ const Login = () => {
                     />
                 </div>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
-                <button type="submit" className="w-full py-2 px-4 bg-gradient-to-r from-purple-600 via-purple-700 to-pink-500 text-white rounded-md hover:bg-gradient-to-l focus:outline-none focus:ring-2 focus:ring-purple-600 dark:hover:bg-gradient-to-l dark:focus:ring-purple-400" disabled={loading}>
+                <button type="submit"   className={`w-full py-2 px-4 text-white rounded-md 
+                        ${loading ? 'bg-purple-600 dark:bg-purple-950 cursor-not-allowed' : 'bg-purple-700 dark:bg-purple-800 '} 
+                        focus:outline-none focus:ring-2 focus:ring-purple-600 
+                        dark:hover:bg-purple-600 dark:focus:ring-purple-400 hover:bg-pink-800
+                        disabled:bg-purple-500 disabled:cursor-not-allowed`}
+                        disabled={loading}
+                    >
                     {loading ? 'Logging in...' : 'Login'}
                 </button>
             </form>
