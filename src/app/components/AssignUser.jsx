@@ -2,10 +2,11 @@
 import { useState, useEffect } from "react";
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from "@headlessui/react";
 import { toast } from "sonner";
+import { useAssignUserContext } from "../context/AssignUserContext";
 
 export default function AssignUser({ selectedUser, onSelectUser }) {
     const [query, setQuery] = useState("");
-    const [users, setUsers] = useState([]);
+    const { users, setUsers } = useAssignUserContext(); // already defined it in the provider
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -36,9 +37,9 @@ export default function AssignUser({ selectedUser, onSelectUser }) {
     }, [query]);
 
     return (
-        <Combobox value={selectedUser} onChange={onSelectUser}>
-            <label className="block mb-2 font-medium">Assigned To</label>
+        <Combobox value={selectedUser || {}} onChange={onSelectUser} >
             <div className="relative">
+                <label className="block mb-2 font-medium">Assigned To</label>
                 <ComboboxInput
                     className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-2 bg-transparent focus:ring-2 focus:ring-purple-700 outline-none"
                     onChange={(e) => setQuery(e.target.value)}

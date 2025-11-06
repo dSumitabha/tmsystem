@@ -36,7 +36,7 @@ export default function TaskForm({ existingTask }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         try {
             const url = isEditMode
                 ? `/api/tasks/${formData.taskId}`   // Update existing
@@ -112,10 +112,6 @@ export default function TaskForm({ existingTask }) {
                         </div>
                     </div>
                     
-                    <AssignUser
-          selectedUser={formData.assignedTo}
-          onSelectUser={handleSelectUser}
-        />
                     <div>
                         <label className="block mb-2 font-medium">Description</label>
                         <textarea
@@ -127,16 +123,10 @@ export default function TaskForm({ existingTask }) {
                         />
                     </div>
                     <div className="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <label className="block mb-2 font-medium">Assigned To (User ID)</label>
-                            <input
-                                type="text"
-                                name="assignedTo"
-                                value={formData.assignedTo}
-                                onChange={handleChange}
-                                className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-2 bg-transparent focus:ring-2 focus:ring-purple-700 outline-none"
-                            />
-                        </div>
+                        <AssignUser
+                            selectedUser={formData.assignedTo} 
+                            onSelectUser={handleSelectUser} 
+                        />
                         <div>
                             <label className="block mb-2 font-medium">Due Date</label>
                             <input
