@@ -5,7 +5,7 @@ import Task from '@/models/Task';
 import User from '@/models/User';
 import dbConnect from '@/lib/db';
 
-//this route will show the created tasks from the auth token
+//this route will show the assigned tasks from the auth token
 export async function GET(request) {
     try {
         const cookieStore = await cookies();
@@ -49,10 +49,10 @@ export async function GET(request) {
         // Query tasks assigned to the user
         const tasks = await Task.find(query)
             .populate('createdBy', 'fullName email')   // relation with user
-            .populate('assignedTo', 'fullName email'); // 
+            .populate('assignedTo', 'fullName email'); // same 
 
         if (tasks.length === 0) {
-            return NextResponse.json({ message: 'No tasks found for this user' }, { status: 404 });
+            return NextResponse.json({ tasks: [] }, { message: 'No tasks found for this user' }, { status: 200 });
         }
 
         return NextResponse.json({ tasks }, { status: 200 });

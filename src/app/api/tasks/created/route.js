@@ -53,7 +53,7 @@ export async function GET(request) {
             .populate('assignedTo', 'fullName email'); // 
 
         if (tasks.length === 0) {
-            return NextResponse.json({ message: 'No tasks found for this user' }, { status: 404 });
+            return NextResponse.json({ tasks: [] }, { message: 'No tasks found for this user' }, { status: 200 });
         }
 
         return NextResponse.json({ tasks }, { status: 200 });

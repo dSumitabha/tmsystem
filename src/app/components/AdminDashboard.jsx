@@ -2,16 +2,25 @@
 import React, { useState, useEffect } from 'react';
 import TaskRow from './TaskRow.jsx';
 import { toast } from 'sonner';
+import Link from 'next/link';
 
 export default function AdminDashboardContent() {
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [statusFilter, setStatusFilter] = useState('');
 
     useEffect(() => {
         const fetchTasks = async () => {
         try {
-            const response = await fetch('/api/tasks/created', {
+            setLoading(true);
+            let url = '/api/tasks/created';
+
+            if (statusFilter) {
+                url += `?status=${statusFilter}`;
+            }
+
+            const response = await fetch(url, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -33,7 +42,7 @@ export default function AdminDashboardContent() {
         };
 
         fetchTasks();
-    }, []);  // call once initial render
+    }, [statusFilter]);  // call once initial render
 
     return (
         <div className="px-6 py-4">
@@ -41,14 +50,26 @@ export default function AdminDashboardContent() {
                 <div className="flex justify-between items-center py-4 px-6 border-b border-gray-200 dark:border-gray-700">
                     <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">Tasks</h2>
                     <div className="flex items-center space-x-4">
-                        <button className="bg-purple-700 hover:bg-purple-800 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-300">
-                        Create Task
-                        </button>
+                        <Link href="/create-task" passHref>
+                            <button className="bg-purple-700 hover:bg-purple-800 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-300">
+                                Create Task
+                            </button>
+                        </Link>
                         <div className="relative">
                             <button className="bg-gray-100 dark:bg-gray-600 dark:text-white text-gray-800 py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
                             Filters
                             </button>
                         </div>
+                        <select
+                            value={statusFilter}
+                            onChange={(e) => setStatusFilter(e.target.value)}
+                            className="bg-gray-100 dark:bg-gray-600 dark:text-white text-gray-800 py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        >
+                            <option value="">Select Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                        </select>
                     </div>
                 </div>
                 <div className="overflow-x-auto">
@@ -65,17 +86,23 @@ export default function AdminDashboardContent() {
                             </tr>
                         </thead>
                         <tbody>
-                            {loading && (
+                            {loading ? (
                                 <tr>
                                     <td colSpan="6" className="text-center py-4 text-sm text-gray-600 dark:text-gray-300">
                                         Loading...
                                     </td>
                                 </tr>
+                            ) : tasks.length === 0 ? (
+                                <tr>
+                                    <td colSpan="6" className="text-center py-4 text-sm text-gray-600 dark:text-gray-300">
+                                        No tasks found with the selected filters.
+                                    </td>
+                                </tr>
+                            ) : (
+                                tasks.map(task => (
+                                    <TaskRow key={task._id} task={task} />
+                                ))
                             )}
-
-                            {tasks.map(task => (
-                                <TaskRow key={task._id} task={task} />
-                            ))}
                         </tbody>
                     </table>
                 </div>
