@@ -37,7 +37,7 @@ export default function AdminDashboardContent() {
 
     return (
         <div className="px-6 py-4">
-            <section className="bg-white dark:bg-gray-800 shadow-sm rounded-lg">
+            <section className="bg-white dark:bg-gray-800 shadow-sm rounded-xs">
                 <div className="flex justify-between items-center py-4 px-6 border-b border-gray-200 dark:border-gray-700">
                     <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">Tasks</h2>
                     <div className="flex items-center space-x-4">
@@ -61,6 +61,7 @@ export default function AdminDashboardContent() {
                                 <th className="px-4 py-2 text-left text-sm font-medium text-gray-600 dark:text-gray-300">Status</th>
                                 <th className="px-4 py-2 text-left text-sm font-medium text-gray-600 dark:text-gray-300">Due Date</th>
                                 <th className="px-4 py-2 text-left text-sm font-medium text-gray-600 dark:text-gray-300">Priority</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-600 dark:text-gray-300">Action</th>
                             </tr>
                         </thead>
                         <tbody>

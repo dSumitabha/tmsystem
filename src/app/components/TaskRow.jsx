@@ -1,3 +1,6 @@
+import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+
+
 export default function TaskRow({ task }) {
     const { taskId, title, assignedTo, status, dueDate, priority } = task;
 
@@ -31,6 +34,16 @@ export default function TaskRow({ task }) {
                 <span className={`px-2 py-1 text-xs font-semibold rounded-full ${priority === 'high' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'}`}>
                     {priority.charAt(0).toUpperCase() + priority.slice(1)}
                 </span>
+            </td>
+            <td className="px-4 py-2">
+                <div className="flex space-x-2">
+                    <button className="p-2 cursor-pointer text-white rounded hover:bg-gray-500 dark:hover:bg-gray-600 focus:outline-none">
+                        <FaEdit className="h-5 w-5" />
+                    </button>
+                    <button className="p-2 cursor-pointer text-white rounded hover:bg-gray-500 dark:hover:bg-gray-600 focus:outline-none">
+                        <FaTrashAlt className="h-5 w-5" />
+                    </button>
+                </div>
             </td>
         </tr>
     );
