@@ -3,12 +3,14 @@ import React, { useState, useEffect } from 'react';
 import TaskRow from './TaskRow.jsx';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import AssignUser from "./AssignUser"; 
 
 export default function AdminDashboardContent() {
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [statusFilter, setStatusFilter] = useState('');
+    const [assignedUserFilter, setAssignedUserFilter] = useState(null);  // Assigned user filter
 
     useEffect(() => {
         const fetchTasks = async () => {
@@ -18,6 +20,10 @@ export default function AdminDashboardContent() {
 
             if (statusFilter) {
                 url += `?status=${statusFilter}`;
+            }
+
+            if (assignedUserFilter) {
+                url += `?assignedTo=${assignedUserFilter._id}`;  // Assuming _id is passed with the user object
             }
 
             const response = await fetch(url, {
@@ -42,24 +48,19 @@ export default function AdminDashboardContent() {
         };
 
         fetchTasks();
-    }, [statusFilter]);  // call once initial render
+    }, [statusFilter, assignedUserFilter]);  // call once initial render
 
     return (
         <div className="px-6 py-4">
             <section className="bg-white dark:bg-gray-800 shadow-sm rounded-xs">
                 <div className="flex justify-between items-center py-4 px-6 border-b border-gray-200 dark:border-gray-700">
                     <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">Tasks</h2>
-                    <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-4 ">
                         <Link href="/create-task" passHref>
                             <button className="bg-purple-700 hover:bg-purple-800 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-300">
                                 Create Task
                             </button>
                         </Link>
-                        <div className="relative">
-                            <button className="bg-gray-100 dark:bg-gray-600 dark:text-white text-gray-800 py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
-                            Filters
-                            </button>
-                        </div>
                         <select
                             value={statusFilter}
                             onChange={(e) => setStatusFilter(e.target.value)}
@@ -70,6 +71,10 @@ export default function AdminDashboardContent() {
                             <option value="in_progress">In Progress</option>
                             <option value="completed">Completed</option>
                         </select>
+                        <AssignUser
+                            selectedUserId={assignedUserFilter ? assignedUserFilter._id : null}
+                            onSelectUser={(user) => setAssignedUserFilter(user)}  // Update the assigned user filter
+                        />
                     </div>
                 </div>
                 <div className="overflow-x-auto">
