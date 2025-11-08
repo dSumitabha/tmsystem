@@ -39,6 +39,7 @@ export async function GET(request) {
 
         const assignedTo = searchParams.get('assignedTo');
         const status = searchParams.get('status');
+        const priority = searchParams.get('priority');
 
         // base query will execute without parametes
         const query = { createdBy: user._id };
@@ -46,6 +47,7 @@ export async function GET(request) {
         // will use this to filters
         if (assignedTo) query.assignedTo = assignedTo;
         if (status) query.status = status;
+        if (priority) query.priority = priority;
 
         // Query tasks assigned to the user
         const tasks = await Task.find(query)

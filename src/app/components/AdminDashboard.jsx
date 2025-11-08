@@ -10,6 +10,7 @@ export default function AdminDashboardContent() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [statusFilter, setStatusFilter] = useState('');
+    const [priorityFilter, setPriorityFilter] = useState('');
     const [assignedUserFilter, setAssignedUserFilter] = useState(null);  // Assigned user filter
 
     useEffect(() => {
@@ -18,12 +19,16 @@ export default function AdminDashboardContent() {
             setLoading(true);
             let url = '/api/tasks/created';
 
+            if (priorityFilter) {
+                url += `?priority=${priorityFilter}`; //priority param with url
+            }
+
             if (statusFilter) {
-                url += `?status=${statusFilter}`;
+                url += `?status=${statusFilter}`;   //status param with url
             }
 
             if (assignedUserFilter) {
-                url += `?assignedTo=${assignedUserFilter._id}`;  // Assuming _id is passed with the user object
+                url += `?assignedTo=${assignedUserFilter._id}`;  // assign to param with url
             }
 
             const response = await fetch(url, {
@@ -48,7 +53,7 @@ export default function AdminDashboardContent() {
         };
 
         fetchTasks();
-    }, [statusFilter, assignedUserFilter]);  // call once initial render
+    }, [statusFilter, priorityFilter, assignedUserFilter]);  // call once initial render
 
     return (
         <div className="px-6 py-4">
@@ -62,8 +67,18 @@ export default function AdminDashboardContent() {
                             </button>
                         </Link>
                         <select
+                            value={priorityFilter}
+                            onChange={(e) => setPriorityFilter(e.target.value)}
+                            className="bg-gray-100 dark:bg-gray-600 dark:text-white text-gray-800 py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        >
+                            <option value="">Select Priority</option>
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                        <select
                             value={statusFilter}
-                            onChange={(e) => setStatusFilter(e.target.value)}
+                            onChange={(e) => setPriorityFilter(e.target.value)}
                             className="bg-gray-100 dark:bg-gray-600 dark:text-white text-gray-800 py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                         >
                             <option value="">Select Status</option>
