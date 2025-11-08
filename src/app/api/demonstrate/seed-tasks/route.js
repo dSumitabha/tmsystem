@@ -24,9 +24,17 @@ export async function GET() {
       createdBy: adminUser._id,
       assignedTo: regularUsers[Math.floor(Math.random() * regularUsers.length)]._id,
     }));
-
-    await Task.insertMany(tasksWithUserIds);
-
+    
+    const promises = tasksWithUserIds.map((task) =>
+      Task.findOneAndUpdate(
+        { taskId: task.taskId },  // Use taskId as the unique identifier
+        { ...task, createdBy: task.createdBy, assignedTo: task.assignedTo },
+        { upsert: true, new: true, runValidators: true }  // `upsert` creates if not found
+      )
+    );
+    
+    await Promise.all(promises);
+    
     return new Response(JSON.stringify({ message: 'Tasks have been successfully seeded.' }), { status: 200 });
   } catch (error) {
     return new Response(JSON.stringify({ error: `Failed to seed tasks: ${error.message}` }), { status: 500 });
