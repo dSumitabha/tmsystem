@@ -6,6 +6,8 @@ export const useAssignUserContext = () => useContext(AssignUserContext);
 
 export const AssignUserProvider = ({ children }) => {
     const [users, setUsers] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [selectedUser, setSelectedUser] = useState(null);
 
     return (

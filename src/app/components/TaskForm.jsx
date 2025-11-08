@@ -1,9 +1,13 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import AssignUser from "./AssignUser";
 
 export default function TaskForm({ existingTask }) {
+    const router = useRouter();
     const isEditMode = !!existingTask;
+
     const [formData, setFormData] = useState(
         existingTask || {
             taskId: "",
@@ -36,33 +40,40 @@ export default function TaskForm({ existingTask }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
+        const url = isEditMode
+            ? `/api/tasks/${formData.taskId}`
+            : `/api/tasks`;
+    
+        const method = isEditMode ? "PUT" : "POST";
+    
+        const taskPromise = fetch(url, {
+            method,
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
+        })
+        .then(async (res) => {
+            const result = await res.json();
+            
+            if (!res.ok) {
+                throw new Error(result.error || "Failed to save task");
+            }
+            
+            return result;
+        });
+    
         try {
-            const url = isEditMode
-                ? `/api/tasks/${formData.taskId}`   // Update existing
-                : `/api/tasks`;                     // Create new
-    
-            const method = isEditMode ? "PUT" : "POST";
-    
-            console.log(`${isEditMode ? "Updating" : "Creating"} task →`, formData);
-    
-            const res = await fetch(url, {
-                method,
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
+            toast.promise(taskPromise, {
+                loading: isEditMode ? 'Updating task...' : 'Creating task...',
+                success: isEditMode ? 'Task updated successfully!' : 'Task created successfully!',
+                error: (err) => err.message || 'An unexpected error occurred',
             });
     
-            const result = await res.json();
+            const result = await taskPromise;
+            
+            console.log(`${isEditMode ? "Updated" : "Created"} task →`, result);
     
-            if (!res.ok) {
-                console.error("Error:", result.error);
-                alert(result.error || "Failed to save task");
-                return;
-            }
-    
-            alert(isEditMode ? "Task updated successfully!" : "Task created successfully!");
-    
-            // reset only after successful creation (not edit)
+            // Reset form only after successful creation (not edit)
             if (!isEditMode) {
                 setFormData({
                     taskId: "",
@@ -75,9 +86,12 @@ export default function TaskForm({ existingTask }) {
                 });
             }
     
+            // to dashboard
+            router.push('/');
+    
         } catch (err) {
-            console.error("Submit error:", err);
-            alert("An unexpected error occurred while saving the task");
+            toast(err.message || "An unexpected error occurred")
+            console.log("Submit error:", err);
         }
     };    
 
