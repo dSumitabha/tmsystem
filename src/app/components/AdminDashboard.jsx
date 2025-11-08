@@ -78,7 +78,7 @@ export default function AdminDashboardContent() {
                         </select>
                         <select
                             value={statusFilter}
-                            onChange={(e) => setPriorityFilter(e.target.value)}
+                            onChange={(e) => setStatusFilter(e.target.value)}
                             className="bg-gray-100 dark:bg-gray-600 dark:text-white text-gray-800 py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                         >
                             <option value="">Select Status</option>

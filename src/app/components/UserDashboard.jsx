@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import UserTaskRow from './UserTaskRow.jsx';
 import Link from 'next/link';
 import { toast } from 'sonner';
-import AssignUser from "./AssignUser"; 
 
 export default function UserDashboard(){
     const [tasks, setTasks] = useState([]);
@@ -11,25 +10,13 @@ export default function UserDashboard(){
     const [error, setError] = useState(null);
     const [statusFilter, setStatusFilter] = useState('');
     const [priorityFilter, setPriorityFilter] = useState('');
-    const [assignedUserFilter, setAssignedUserFilter] = useState(null);  // Assigned user filter
+    const [filteredTasks, setFilteredTasks] = useState([]);
 
     useEffect(() => {
         const fetchTasks = async () => {
         try {
             setLoading(true);
             let url = '/api/tasks/assigned';
-
-            if (priorityFilter) {
-                url += `?priority=${priorityFilter}`; //priority param with url
-            }
-
-            if (statusFilter) {
-                url += `?status=${statusFilter}`;   //status param with url
-            }
-
-            if (assignedUserFilter) {
-                url += `?assignedTo=${assignedUserFilter._id}`;  // assign to param with url
-            }
 
             const response = await fetch(url, {
                 method: 'GET',
@@ -53,7 +40,25 @@ export default function UserDashboard(){
         };
 
         fetchTasks();
-    }, [statusFilter, priorityFilter, assignedUserFilter]);  // call once initial render
+    }, []);  // call once initial render
+
+    // Automatically filter tasks whenever status or priority changes
+    useEffect(() => {
+        let filtered = tasks;
+
+        // Apply status filter if it exists
+        if (statusFilter) {
+            filtered = filtered.filter(task => task.status === statusFilter);
+        }
+
+        // Apply priority filter if it exists
+        if (priorityFilter) {
+            filtered = filtered.filter(task => task.priority === priorityFilter);
+        }
+
+        // Update the filteredTasks state
+        setFilteredTasks(filtered);
+    }, [statusFilter, priorityFilter, tasks]);
 
     return (
         <div className="px-6 py-4">
@@ -73,7 +78,7 @@ export default function UserDashboard(){
                         </select>
                         <select
                             value={statusFilter}
-                            onChange={(e) => setPriorityFilter(e.target.value)}
+                            onChange={(e) => setStatusFilter(e.target.value)}
                             className="bg-gray-100 dark:bg-gray-600 dark:text-white text-gray-800 py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                         >
                             <option value="">Select Status</option>
@@ -81,10 +86,6 @@ export default function UserDashboard(){
                             <option value="in_progress">In Progress</option>
                             <option value="completed">Completed</option>
                         </select>
-                        <AssignUser
-                            selectedUserId={assignedUserFilter ? assignedUserFilter._id : null}
-                            onSelectUser={(user) => setAssignedUserFilter(user)}  // Update the assigned user filter
-                        />
                     </div>
                 </div>
                 <div className="overflow-x-auto">
@@ -109,11 +110,17 @@ export default function UserDashboard(){
                             ) : tasks.length === 0 ? (
                                 <tr>
                                     <td colSpan="6" className="text-center py-4 text-sm text-gray-600 dark:text-gray-300">
+                                        No tasks found assigned to you.
+                                    </td>
+                                </tr>
+                            ) : filteredTasks.length === 0 ? (
+                                <tr>
+                                    <td colSpan="6" className="text-center py-4 text-sm text-gray-600 dark:text-gray-300">
                                         No tasks found with the selected filters.
                                     </td>
                                 </tr>
                             ) : (
-                                tasks.map(task => (
+                                filteredTasks.map(task => (
                                     <UserTaskRow key={task._id} task={task} />
                                 ))
                             )}
