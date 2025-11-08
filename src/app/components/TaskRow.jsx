@@ -4,7 +4,7 @@ import DeleteConfirmModal from './DeleteConfirmModal';
 import {toast} from 'sonner';
 
 export default function TaskRow({ task }) {
-    const { taskId, title, assignedTo, status, dueDate, priority } = task;
+    const { _id, taskId, title, assignedTo, status, dueDate, priority } = task;
 
     // formating due date ot a human readable format ("Oct 29, 2025")
     const formattedDueDate = new Date(dueDate).toLocaleDateString('en-US', {
@@ -16,8 +16,9 @@ export default function TaskRow({ task }) {
     const modalRef = useRef();
 
     const handleDelete = async (taskId) => {
+        // console.log(taskId)
         try {
-            const response = await fetch(`/api/tasks?taskId=${taskId}`, {
+            const response = await fetch(`/api/tasks?id=${taskId}`, {
                 method: 'DELETE',
             });
     
@@ -70,7 +71,7 @@ export default function TaskRow({ task }) {
                     <button onClick={() => modalRef.current.open()} className="p-2 cursor-pointer text-red-600 dark:text-red-400 rounded hover:bg-gray-500 dark:hover:bg-gray-600 focus:outline-none">
                         <FaRegTrashAlt className="h-5 w-5" />
                     </button>
-                    <DeleteConfirmModal ref={modalRef} onConfirm={() => handleDelete(taskId)}  />
+                    <DeleteConfirmModal ref={modalRef} onConfirm={() => handleDelete(_id)}  />
                 </div>
             </td>
         </tr>

@@ -110,14 +110,14 @@ export async function DELETE(request) {
 
         const userId = decoded.userId;
         const searchParams = request.nextUrl.searchParams;
-        const taskId = searchParams.get('taskId');
+        const _id = searchParams.get('id');
 
-        if (!taskId) {
+        if (!_id) {
             return NextResponse.json({ error: "Task ID is required" }, { status: 400 });
         }
 
         // Find the task by ID
-        const task = await Task.findOne({ taskId });
+        const task = await Task.findOne({ _id });
 
         if (!task) {
             return NextResponse.json({ error: "Task not found" }, { status: 404 });
@@ -129,7 +129,7 @@ export async function DELETE(request) {
         }
 
         // Proceed with deleting the task
-        await Task.deleteOne({ taskId });
+        await Task.deleteOne({ _id });
 
         return NextResponse.json(
             {
