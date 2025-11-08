@@ -8,27 +8,22 @@ export default function Header() {
     const router = useRouter();
 
     const handleLogout = async () => {
-        toast.promise(
-            fetch('/api/logout', {
+        try {
+            const response = await fetch('/api/logout', {
                 method: 'GET',
                 credentials: 'same-origin',
-            }).then(async (response) => {
-                if (response.ok) {
-                    return 'Logout successful';
-                } else {
-                    throw new Error('Logout failed');
-                }
-            }),
-            {
-                loading: 'Logging out...',
-                success: 'Logout successful!',
-                error: 'Error logging out. Please try again.',
+            });
+    
+            if (response.ok) {
+                toast.success('Logout successful!');
+                router.push('/login');
+            } else {
+                toast.error('Error logging out. Please try again.');
             }
-        ).then(() => {
-            router.push('/login');
-        }).catch((error) => {
+        } catch (error) {
             console.error(error);
-        });
+            toast.error('Error logging out. Please try again.');
+        }
     };
 
     return (
@@ -36,7 +31,7 @@ export default function Header() {
             <h1 className="text-white text-2xl font-bold pl-4">Task Management System</h1>
             <button
                 onClick={handleLogout}
-                className="text-white text-xl p-2 rounded-full hover:bg-slate-800 transition"
+                className="text-white cursor-pointer text-xl p-2 rounded-full hover:bg-slate-800 transition"
                 title="Logout"
             >
                 <FaPowerOff />
