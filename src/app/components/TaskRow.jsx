@@ -1,11 +1,23 @@
-import { FaEdit, FaTrashAlt } from 'react-icons/fa';
-
+import { FaRegEdit, FaRegTrashAlt } from 'react-icons/fa';
+import { useRef } from 'react';
+import DeleteConfirmModal from './DeleteConfirmModal';
 
 export default function TaskRow({ task }) {
     const { taskId, title, assignedTo, status, dueDate, priority } = task;
 
-  // Format the due date into a more readable format (e.g., "Nov 30, 2025")
-    const formattedDueDate = new Date(dueDate).toLocaleDateString();
+    // formating due date ot a human readable format ("Oct 29, 2025")
+    const formattedDueDate = new Date(dueDate).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+    });
+      
+    const modalRef = useRef();
+
+    const handleDelete = async () => {
+        console.log("Deleted");
+    };
+  
 
     return (
         <tr className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
@@ -37,12 +49,13 @@ export default function TaskRow({ task }) {
             </td>
             <td className="px-4 py-2">
                 <div className="flex space-x-2">
-                    <button className="p-2 cursor-pointer text-white rounded hover:bg-gray-500 dark:hover:bg-gray-600 focus:outline-none">
-                        <FaEdit className="h-5 w-5" />
+                    <button className="p-2 cursor-pointer text-neutral-800 dark:text-neutral-100 rounded hover:bg-gray-500 dark:hover:bg-gray-600 focus:outline-none">
+                        <FaRegEdit className="h-5 w-5" />
                     </button>
-                    <button className="p-2 cursor-pointer text-white rounded hover:bg-gray-500 dark:hover:bg-gray-600 focus:outline-none">
-                        <FaTrashAlt className="h-5 w-5" />
+                    <button onClick={() => modalRef.current.open()} className="p-2 cursor-pointer text-red-600 dark:text-red-400 rounded hover:bg-gray-500 dark:hover:bg-gray-600 focus:outline-none">
+                        <FaRegTrashAlt className="h-5 w-5" />
                     </button>
+                    <DeleteConfirmModal ref={modalRef} onConfirm={handleDelete} />
                 </div>
             </td>
         </tr>
