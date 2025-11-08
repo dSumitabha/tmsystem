@@ -4,7 +4,7 @@ import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from "@headl
 import { toast } from "sonner";
 import { useAssignUserContext } from "../context/AssignUserContext";
 
-export default function AssignUser({ selectedUserId, onSelectUser }) {
+export default function AssignUser({ label, selectedUserId, onSelectUser }) {
     const [query, setQuery] = useState("");
     const { users, setUsers, selectedUser, setSelectedUser } = useAssignUserContext(); // already defined it in the provider
     const [isLoading, setIsLoading] = useState(false);
@@ -45,7 +45,7 @@ export default function AssignUser({ selectedUserId, onSelectUser }) {
             onSelectUser(user);  // this is to passing the object to parent
         }}>
             <div className="relative">
-                <label className="block mb-2 font-medium">Assigned To</label>
+                {label && <label className="block mb-2 font-medium">Assigned To</label>}
                 <ComboboxInput
                     className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-2 bg-transparent focus:ring-2 focus:ring-purple-700 outline-none"
                     onChange={(e) => setQuery(e.target.value)}
