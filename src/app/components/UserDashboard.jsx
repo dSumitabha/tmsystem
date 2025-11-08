@@ -11,6 +11,7 @@ export default function UserDashboard(){
     const [statusFilter, setStatusFilter] = useState('');
     const [priorityFilter, setPriorityFilter] = useState('');
     const [filteredTasks, setFilteredTasks] = useState([]);
+    const [sortOrder, setSortOrder] = useState('asc'); 
 
     useEffect(() => {
         const fetchTasks = async () => {
@@ -56,9 +57,22 @@ export default function UserDashboard(){
             filtered = filtered.filter(task => task.priority === priorityFilter);
         }
 
+        filtered = filtered.sort((a, b) => {
+            if (!a.dueDate) return 1; // Put tasks without due date at the end
+            if (!b.dueDate) return -1; // Put tasks without due date at the end
+        
+            const dateA = new Date(a.dueDate);
+            const dateB = new Date(b.dueDate);
+        
+            // Sorting ascending or descending based on `sortOrder`
+            return sortOrder === 'asc'
+                ? dateA - dateB
+                : dateB - dateA; // descending order
+        });
+
         // Update the filteredTasks state
         setFilteredTasks(filtered);
-    }, [statusFilter, priorityFilter, tasks]);
+    }, [statusFilter, priorityFilter, tasks, sortOrder]);
 
     return (
         <div className="px-6 py-4">
@@ -85,6 +99,15 @@ export default function UserDashboard(){
                             <option value="pending">Pending</option>
                             <option value="in_progress">In Progress</option>
                             <option value="completed">Completed</option>
+                        </select>
+                        <select
+                            value={sortOrder}
+                            onChange={(e) => setSortOrder(e.target.value)}
+                            className="bg-gray-100 dark:bg-gray-600 dark:text-white text-gray-800 py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        >
+                            <option value="">Sort by Due Date</option>
+                            <option value="desc">Due Soon</option>
+                            <option value="asc">Due Later</option>
                         </select>
                     </div>
                 </div>
