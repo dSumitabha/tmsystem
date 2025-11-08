@@ -15,9 +15,8 @@ export async function GET() {
     }
 }
 
-//very basic route setup to create a task
+//route setup to create a task
 export async function POST(request) {
-    console.log("POST request received")
     await dbConnect();
 
     try {
@@ -82,6 +81,65 @@ export async function POST(request) {
         );
     } catch (err) {
         console.error("Task creation error:", err);
+        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    }
+}
+
+// Delete task method
+export async function DELETE(request) {
+    console.log("DELETE request received");
+    await dbConnect();
+
+    try {
+        const cookieStore = await cookies();
+        const token = cookieStore.get("token")?.value;
+
+        if (!token) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+
+        let decoded;
+        try {
+            const { payload } = await jwtVerify(token, secret);
+            decoded = payload;
+        } catch (err) {
+            return NextResponse.json({ error: "Invalid or expired token" }, { status: 401 });
+        }
+
+        const userId = decoded.userId;
+        const searchParams = request.nextUrl.searchParams;
+        const taskId = searchParams.get('taskId');
+
+        if (!taskId) {
+            return NextResponse.json({ error: "Task ID is required" }, { status: 400 });
+        }
+
+        // Find the task by ID
+        const task = await Task.findOne({ taskId });
+
+        if (!task) {
+            return NextResponse.json({ error: "Task not found" }, { status: 404 });
+        }
+
+        // Check if the user is authorized to delete the task (either the creator or the assigned user)
+        if (task.createdBy.toString() !== userId.toString()) {
+            return NextResponse.json({ error: "You are not authorized to delete this task" }, { status: 403 });
+        }
+
+        // Proceed with deleting the task
+        await Task.deleteOne({ taskId });
+
+        return NextResponse.json(
+            {
+                success: true,
+                message: "Task deleted successfully",
+            },
+            { status: 200 }
+        );
+    } catch (err) {
+        console.error("Task deletion error:", err);
         return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }
 }

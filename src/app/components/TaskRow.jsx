@@ -1,6 +1,7 @@
 import { FaRegEdit, FaRegTrashAlt } from 'react-icons/fa';
 import { useRef } from 'react';
 import DeleteConfirmModal from './DeleteConfirmModal';
+import {toast} from 'sonner';
 
 export default function TaskRow({ task }) {
     const { taskId, title, assignedTo, status, dueDate, priority } = task;
@@ -11,13 +12,27 @@ export default function TaskRow({ task }) {
         day: 'numeric',
         year: 'numeric'
     });
-      
+    
     const modalRef = useRef();
 
-    const handleDelete = async () => {
-        console.log("Deleted");
+    const handleDelete = async (taskId) => {
+        try {
+            const response = await fetch(`/api/tasks?taskId=${taskId}`, {
+                method: 'DELETE',
+            });
+    
+            if (response.ok) {
+                const result = await response.json();
+                toast.success(result.message || "Task deleted successfully!");
+            } else {
+                const errorData = await response.json();
+                toast.error(errorData.error || "Failed to delete task.");
+            }
+        } catch (error) {
+            console.error("Delete task error:", error);
+            toast.error("An error occurred while deleting the task.");
+        }
     };
-  
 
     return (
         <tr className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
@@ -55,7 +70,7 @@ export default function TaskRow({ task }) {
                     <button onClick={() => modalRef.current.open()} className="p-2 cursor-pointer text-red-600 dark:text-red-400 rounded hover:bg-gray-500 dark:hover:bg-gray-600 focus:outline-none">
                         <FaRegTrashAlt className="h-5 w-5" />
                     </button>
-                    <DeleteConfirmModal ref={modalRef} onConfirm={handleDelete} />
+                    <DeleteConfirmModal ref={modalRef} onConfirm={() => handleDelete(taskId)}  />
                 </div>
             </td>
         </tr>
