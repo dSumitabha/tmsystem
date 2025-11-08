@@ -121,6 +121,7 @@ export default function UserDashboard(){
                                 <th className="px-4 py-2 text-left text-sm font-medium text-gray-600 dark:text-gray-300">Status</th>
                                 <th className="px-4 py-2 text-left text-sm font-medium text-gray-600 dark:text-gray-300">Due Date</th>
                                 <th className="px-4 py-2 text-left text-sm font-medium text-gray-600 dark:text-gray-300">Priority</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-600 dark:text-gray-300">Action</th>
                             </tr>
                         </thead>
                         <tbody>

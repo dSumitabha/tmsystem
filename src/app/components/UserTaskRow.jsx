@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { FaRegEye } from 'react-icons/fa';
 
 export default function UserTaskRow({ task }) {
     const { _id, taskId, title, assignedTo, status, dueDate, priority } = task;
@@ -11,8 +13,12 @@ export default function UserTaskRow({ task }) {
 
     return (
         <tr className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
-            <td className="px-4 py-2 text-sm text-gray-800 dark:text-white">{taskId}</td>
-            <td className="px-4 py-2 text-sm text-gray-800 dark:text-white">{title}</td>
+            <td className="px-4 py-2 text-sm text-gray-800 dark:text-white">
+                <Link href={`/tasks/${_id}`} passHref>{taskId}</Link>
+            </td>
+            <td className="px-4 py-2 text-sm text-gray-800 dark:text-white">
+                <Link href={`/tasks/${_id}`} passHref>{title}</Link>
+            </td>
             <td className="px-4 py-2 text-sm text-gray-800 dark:text-white">{assignedTo.fullName}</td>
             <td className="px-4 py-2 text-sm text-gray-800 dark:text-white">
                 <span
@@ -36,6 +42,11 @@ export default function UserTaskRow({ task }) {
                 <span className={`px-2 py-1 text-xs font-semibold rounded-full ${priority === 'high' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'}`}>
                     {priority.charAt(0).toUpperCase() + priority.slice(1)}
                 </span>
+            </td>
+            <td className="text-center text-gray-800 dark:text-white">
+                <Link href={`/tasks/${_id}`} passHref>
+                    <FaRegEye className="w-4 h-4"/>
+                </Link>
             </td>
         </tr>
     );

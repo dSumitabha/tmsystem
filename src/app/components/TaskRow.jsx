@@ -2,6 +2,7 @@ import { FaRegEdit, FaRegTrashAlt } from 'react-icons/fa';
 import { useRef } from 'react';
 import DeleteConfirmModal from './DeleteConfirmModal';
 import {toast} from 'sonner';
+import Link from 'next/link';
 
 export default function TaskRow({ task }) {
     const { _id, taskId, title, assignedTo, status, dueDate, priority } = task;
@@ -65,6 +66,9 @@ export default function TaskRow({ task }) {
             </td>
             <td className="px-4 py-2">
                 <div className="flex space-x-2">
+                    <Link href={`/tasks/${_id}`} passHref className="p-2 cursor-pointer text-neutral-800 dark:text-neutral-100 rounded hover:bg-gray-500 dark:hover:bg-gray-600 focus:outline-none">
+                        <FaRegEye className="w-4 h-4"/>
+                    </Link>
                     <button className="p-2 cursor-pointer text-neutral-800 dark:text-neutral-100 rounded hover:bg-gray-500 dark:hover:bg-gray-600 focus:outline-none">
                         <FaRegEdit className="h-5 w-5" />
                     </button>
