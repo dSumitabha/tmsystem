@@ -1,0 +1,266 @@
+[
+   {
+     "taskId": "TSK1",
+     "title": "Create User Authentication",
+     "description": "Implement user authentication with JWT, including signup, login, and password reset.",
+     "status": "in_progress",
+     "priority": "high",
+     "dueDate": "2025-11-15T00:00:00Z"
+   },
+   {
+     "taskId": "TSK2",
+     "title": "Design Homepage Layout",
+     "description": "Create a responsive layout for the homepage using CSS Grid and Flexbox.",
+     "status": "pending",
+     "priority": "medium",
+     "dueDate": "2025-11-20T00:00:00Z"
+   },
+   {
+     "taskId": "TSK3",
+     "title": "Set Up MongoDB Schema",
+     "description": "Create the MongoDB schema for the application, including necessary relations.",
+     "status": "pending",
+     "priority": "low",
+     "dueDate": "2025-11-18T00:00:00Z"
+   },
+   {
+     "taskId": "TSK4",
+     "title": "Implement API Endpoints for CRUD Operations",
+     "description": "Develop RESTful API endpoints for creating, reading, updating, and deleting task items.",
+     "status": "in_progress",
+     "priority": "high",
+     "dueDate": "2025-11-25T00:00:00Z"
+   },
+   {
+     "taskId": "TSK5",
+     "title": "Develop Task List Frontend Component",
+     "description": "Build the React/Vue/Angular component for displaying and managing the list of tasks.",
+     "status": "pending",
+     "priority": "medium",
+     "dueDate": "2025-11-30T00:00:00Z"
+   },
+   {
+     "taskId": "TSK6",
+     "title": "Write Unit Tests for Authentication",
+     "description": "Create comprehensive unit tests for all user authentication functions (signup, login, etc.).",
+     "status": "pending",
+     "priority": "high",
+     "dueDate": "2025-12-05T00:00:00Z"
+   },
+   {
+     "taskId": "TSK7",
+     "title": "Configure CI/CD Pipeline",
+     "description": "Set up a Continuous Integration and Continuous Deployment pipeline using GitHub Actions or GitLab CI.",
+     "status": "in_progress",
+     "priority": "medium",
+     "dueDate": "2025-12-10T00:00:00Z"
+   },
+   {
+     "taskId": "TSK8",
+     "title": "Optimize Database Queries",
+     "description": "Review and optimize slow-running database queries to improve application performance.",
+     "status": "pending",
+     "priority": "low",
+     "dueDate": "2025-12-15T00:00:00Z"
+   },
+   {
+     "taskId": "TSK9",
+     "title": "Integrate Third-Party Logging Service",
+     "description": "Set up and integrate a logging service like Winston or Pino for server-side error tracking.",
+     "status": "completed",
+     "priority": "medium",
+     "dueDate": "2025-11-05T00:00:00Z"
+   },
+   {
+     "taskId": "TSK10",
+     "title": "Create Mobile Responsive Navigation Bar",
+     "description": "Develop a responsive navigation bar that adapts correctly to mobile devices (e.g., a hamburger menu).",
+     "status": "pending",
+     "priority": "low",
+     "dueDate": "2025-11-22T00:00:00Z"
+   },
+   {
+     "taskId": "TSK11",
+     "title": "Refactor Error Handling Middleware",
+     "description": "Standardize and centralize error handling logic across all API routes using middleware.",
+     "status": "in_progress",
+     "priority": "high",
+     "dueDate": "2025-11-28T00:00:00Z"
+   },
+   {
+     "taskId": "TSK12",
+     "title": "Document API Usage in Swagger/OpenAPI",
+     "description": "Generate or manually write comprehensive API documentation using Swagger/OpenAPI specification.",
+     "status": "pending",
+     "priority": "medium",
+     "dueDate": "2025-12-01T00:00:00Z"
+   },
+   {
+     "taskId": "TSK13",
+     "title": "Conduct Security Audit on Dependencies",
+     "description": "Scan and review all project dependencies for known security vulnerabilities and apply necessary patches/updates.",
+     "status": "completed",
+     "priority": "high",
+     "dueDate": "2025-11-01T00:00:00Z"
+   },
+   {
+     "taskId": "TSK14",
+     "title": "Create User Profile Management Screen",
+     "description": "Develop the frontend component allowing users to view and update their profile information (name, email, password).",
+     "status": "pending",
+     "priority": "medium",
+     "dueDate": "2025-12-08T00:00:00Z"
+   },
+   {
+     "taskId": "TSK15",
+     "title": "Set Up Database Backup Strategy",
+     "description": "Configure automated daily backups for the MongoDB database and define a restore procedure.",
+     "status": "in_progress",
+     "priority": "high",
+     "dueDate": "2025-12-12T00:00:00Z"
+   },
+   {
+     "taskId": "TSK16",
+     "title": "Implement Client-Side Form Validation",
+     "description": "Add robust client-side validation to all input forms (login, signup, task creation) to enhance user experience.",
+     "status": "pending",
+     "priority": "medium",
+     "dueDate": "2025-12-18T00:00:00Z"
+   },
+   {
+     "taskId": "TSK17",
+     "title": "Design Application Logo and Favicon",
+     "description": "Create a simple, modern logo and favicon for branding the application interface.",
+     "status": "pending",
+     "priority": "low",
+     "dueDate": "2025-11-29T00:00:00Z"
+   },
+   {
+     "taskId": "TSK18",
+     "title": "Integrate Email Notification Service",
+     "description": "Connect the application to a transactional email service (e.g., SendGrid) for sending task reminders.",
+     "status": "in_progress",
+     "priority": "high",
+     "dueDate": "2025-12-24T00:00:00Z"
+   },
+   {
+     "taskId": "TSK19",
+     "title": "Write E2E Tests for Core Workflow",
+     "description": "Develop End-to-End tests using Cypress or Playwright covering the signup, login, and task creation workflow.",
+     "status": "pending",
+     "priority": "high",
+     "dueDate": "2025-12-30T00:00:00Z"
+   },
+   {
+     "taskId": "TSK20",
+     "title": "Configure Environment Variables",
+     "description": "Securely set up and manage environment variables for development, staging, and production environments.",
+     "status": "completed",
+     "priority": "medium",
+     "dueDate": "2025-11-10T00:00:00Z"
+   },
+   {
+     "taskId": "TSK21",
+     "title": "Add Filtering and Sorting to Task List",
+     "description": "Implement functionality on the frontend to filter tasks by status and priority, and sort by due date.",
+     "status": "in_progress",
+     "priority": "medium",
+     "dueDate": "2025-12-05T00:00:00Z"
+   },
+   {
+     "taskId": "TSK22",
+     "title": "Review and Optimize Bundling (Webpack/Vite)",
+     "description": "Analyze the final build output and configure the bundler to minimize size and improve load times.",
+     "status": "pending",
+     "priority": "low",
+     "dueDate": "2026-01-05T00:00:00Z"
+   },
+   {
+     "taskId": "TSK23",
+     "title": "Internationalization (i18n) Setup",
+     "description": "Configure the framework to support multiple languages and create initial translation files for English and Spanish.",
+     "status": "pending",
+     "priority": "low",
+     "dueDate": "2026-01-15T00:00:00Z"
+   },
+   {
+     "taskId": "TSK24",
+     "title": "Implement 'Forgot Password' Flow",
+     "description": "Develop the backend logic and frontend UI for sending a password reset link via email and handling the token validation.",
+     "status": "in_progress",
+     "priority": "high",
+     "dueDate": "2025-12-19T00:00:00Z"
+   },
+   {
+     "taskId": "TSK25",
+     "title": "Add Task Commenting Feature",
+     "description": "Implement a sub-schema in MongoDB to store comments associated with each task and build the corresponding UI component.",
+     "status": "pending",
+     "priority": "medium",
+     "dueDate": "2026-01-02T00:00:00Z"
+   },
+   {
+     "taskId": "TSK26",
+     "title": "Set Up HTTPS and Domain Configuration",
+     "description": "Obtain an SSL certificate (e.g., Let's Encrypt) and configure the server/proxy (Nginx/Apache) to use HTTPS for the production domain.",
+     "status": "completed",
+     "priority": "high",
+     "dueDate": "2025-11-14T00:00:00Z"
+   },
+   {
+     "taskId": "TSK27",
+     "title": "Create Dashboard Analytics View",
+     "description": "Design and implement a simple dashboard showing key metrics like 'Tasks by Status' and 'Tasks overdue'.",
+     "status": "pending",
+     "priority": "medium",
+     "dueDate": "2026-01-10T00:00:00Z"
+   },
+   {
+     "taskId": "TSK28",
+     "title": "Develop Task Archiving Functionality",
+     "description": "Add an option for users to archive (soft-delete) completedd tasks and a separate view to see archived items.",
+     "status": "pending",
+     "priority": "low",
+     "dueDate": "2026-01-20T00:00:00Z"
+   },
+   {
+     "taskId": "TSK29",
+     "title": "Implement Rate Limiting on API",
+     "description": "Apply server-side rate limiting to prevent abuse on public endpoints like login and signup.",
+     "status": "in_progress",
+     "priority": "high",
+     "dueDate": "2025-12-25T00:00:00Z"
+   },
+   {
+     "taskId": "TSK30",
+     "title": "Perform Cross-Browser Compatibility Check",
+     "description": "Test the application layout and functionality on major browsers (Chrome, Firefox, Safari, Edge).",
+     "status": "pending",
+     "priority": "low",
+     "dueDate": "2026-01-07T00:00:00Z"
+   },
+   {
+     "taskId": "TSK31",
+     "title": "Upgrade Dependencies to Latest Stable Versions",
+     "description": "Review the 'package.json'/'requirements.txt' and update all major dependencies while ensuring no breaking changes occur.",
+     "status": "pending",
+     "priority": "medium",
+     "dueDate": "2025-12-03T00:00:00Z"
+   },
+   {
+     "taskId": "TSK32",
+     "title": "Create Onboarding Tutorial/Walkthrough",
+     "description": "Develop a simple, interactive tutorial for new users explaining the core features of the task application.",
+     "status": "pending",
+     "priority": "low",
+     "dueDate": "2026-02-01T00:00:00Z"
+   },
+   {
+     "taskId": "TSK33",
+     "title": "Implement Image Upload for Task Attachments",
+     "description": "Set up storage (e.g., S3 or local file system) and API endpoints to allow users to attach images to tasks.",
+     "status": "in_progress",
+     "priority": "high",
+     "dueDate": "2026-01-15T00:00:00Z"
+   }
+]
