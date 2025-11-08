@@ -1,4 +1,4 @@
-import { FaRegEdit, FaRegTrashAlt } from 'react-icons/fa';
+import { FaRegEdit, FaRegTrashAlt, FaRegEye } from 'react-icons/fa';
 import { useRef } from 'react';
 import DeleteConfirmModal from './DeleteConfirmModal';
 import {toast} from 'sonner';
