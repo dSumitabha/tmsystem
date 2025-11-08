@@ -2,54 +2,63 @@
 import { useState } from "react";
 import Link from "next/link";
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
     
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         setError('');
     
-        // Prepare the data to be sent in the request body
         const loginData = { email, password };
     
-        // Use toast.promise to handle loading, success, and error states
-        toast.promise(
-            fetch('/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(loginData),
-            })
-            .then((response) => response.json())
-            .then((data) => {
-                setLoading(false);
-                if (data.token) {
-                    // Handle successful login
-                    console.log('Login successful:', data);
-                    return data; // to toast the sooner
-                } else {
-                    throw new Error(data.error || 'Something went wrong');
-                }
-            })
-            , {
-                loading: 'Logging in...', // Display while waiting for response
-                success: 'Login successful!', // On successful login
-                error: (error) => error.message || 'Login failed. Please try again later.', // On error
-            }
-        )
-        .catch((error) => {
-            // Handle any other errors (network issues, etc.)
-            console.error('Login error:', error);
+        const loginPromise = fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(loginData),
         })
-        .finally(() => {
-            setLoading(false); // Reset loading state after the operation
+        .then(async (response) => {
+            const data = await response.json();
+            
+            // Check if response is not ok (4xx, 5xx errors)
+            if (!response.ok) {
+                throw new Error(data.error || data.message || 'Login failed');
+            }
+            
+            if (data.token) {
+                return data;
+            } else {
+                throw new Error(data.error || 'Invalid credentials');
+            }
         });
+    
+        try {
+            toast.promise(loginPromise, {
+                loading: 'Logging in...',
+                success: 'Login successful!',
+                error: (err) => err.message || 'Login failed. Please try again.',
+            });
+    
+            const data = await loginPromise;
+            
+            // Handle successful login (store token, redirect, etc.)
+            console.log('Login successful:', data);
+            router.push('/'); // or wherever you want to redirect
+            
+        } catch (error) {
+            console.error('Login error:', error);
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
     };
     
     return (

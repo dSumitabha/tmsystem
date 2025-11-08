@@ -1,55 +1,71 @@
 "use client"
 import { useState } from "react";
+import { useRouter } from 'next/navigation';
 import Link from "next/link";
+import { toast } from 'sonner';
 
-    const SignUp = () => {
-        const [email, setEmail] = useState("");
-        const [fullName, setFullName] = useState("");
-        const [password, setPassword] = useState("");
-        const [errorMessage, setErrorMessage] = useState("");
-        const [loading, setLoading] = useState(false);
+const SignUp = () => {
+    const [email, setEmail] = useState("");
+    const [fullName, setFullName] = useState("");
+    const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
     
-
-        const handleSubmit = async (e) => {
-            e.preventDefault();
-        
-            // Basic validation (can be expanded)
-            if (!email || !fullName || !password) {
-                setErrorMessage('Please fill in all fields');
-                return;
-            }
-        
-            setLoading(true);
-            setErrorMessage('');
-        
-            try {
-                const response = await fetch('/api/sign-up', {
-                    method: 'POST',
-                    headers: {
-                    'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                    email,
-                    fullName,
-                    password,
-                    }),
-                });
+        // Basic validation
+        if (!email || !fullName || !password) {
+            toast.error('Please fill in all fields');
+            return;
+        }
+    
+        setLoading(true);
+        setErrorMessage('');
+    
+        const signupPromise = fetch('/api/sign-up', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email,
+                fullName,
+                password,
+            }),
+        })
+        .then(async (response) => {
+            const result = await response.json();
             
-                const result = await response.json();
-            
-                if (response.ok) {
-                    console.log('User registered:', result);
-                    // I need to redirect to the relavant page with the token 
-                } else {
-                    setErrorMessage(result.error || 'Something went wrong');
-                }
-            } catch (error) {
-                setErrorMessage('Registration failed, please try again');
-            } finally {
-                setLoading(false);
+            if (!response.ok) {
+                throw new Error(result.error || 'Registration failed');
             }
+            
+            return result;
+        });
+    
+        try {
+            toast.promise(signupPromise, {
+                loading: 'Creating your account...',
+                success: 'Account created successfully!',
+                error: (err) => err.message || 'Registration failed. Please try again.',
+            });
+    
+            const result = await signupPromise;
+            
+            console.log('User registered:', result);
+            
+            // Redirect to dashboard or login page
+            router.push('/');
+            
+        } catch (error) {
+            console.error('Registration error:', error);
+            setErrorMessage(error.message);
+        } finally {
+            setLoading(false);
+        }
     };
-    
 
     return (
         <div className="w-full max-w-md p-8 space-y-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg">
@@ -96,7 +112,11 @@ import Link from "next/link";
                     />
                 </div>
                 {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-                <button type="submit" className="w-full py-2 px-4 bg-gradient-to-r from-purple-600 via-purple-700 to-pink-500 text-white rounded-md hover:bg-gradient-to-l focus:outline-none focus:ring-2 focus:ring-purple-600 dark:hover:bg-gradient-to-l dark:focus:ring-purple-400" disabled={loading}>
+                <button type="submit" className={`w-full py-2 px-4 text-white rounded-md 
+                        ${loading ? 'bg-purple-600 dark:bg-purple-950 cursor-not-allowed' : 'bg-purple-700 dark:bg-purple-800 '} 
+                        focus:outline-none focus:ring-2 focus:ring-purple-600 
+                        dark:hover:bg-purple-600 dark:focus:ring-purple-400 hover:bg-pink-800
+                        disabled:bg-purple-500 disabled:cursor-not-allowed`} disabled={loading}>
                     {loading ? 'Loading...' : 'Sign Up'}
                 </button>
             </form>
