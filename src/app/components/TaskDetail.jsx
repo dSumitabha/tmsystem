@@ -2,6 +2,12 @@ import React from 'react';
 
 const TaskDetail = ({task}) => {
 
+    const formattedDueDate = new Date(dueDate).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+    });
+
     return (
         <div className="min-h-screen w-full px-6 py-6 bg-slate-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
             <div className="max-w-6xl mx-auto">
@@ -44,7 +50,7 @@ const TaskDetail = ({task}) => {
                         </div>
                         <div className="flex items-center space-x-1">
                             <span className="font-semibold">Due Date:</span>
-                            <span>{task.dueDate}</span>
+                            <span>{formattedDueDate}</span>
                         </div>
                     </div>
                 </div>
