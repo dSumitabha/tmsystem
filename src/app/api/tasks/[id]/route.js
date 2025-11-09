@@ -122,3 +122,47 @@ export async function PUT(request, { params }) {
         return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }
 }
+
+
+//delete a task
+export async function DELETE(request, { params }) {
+    await dbConnect();
+
+    try {
+        const cookieStore = await cookies();
+        const token = cookieStore.get("token")?.value;
+
+        if (!token) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+
+        let decoded;
+        try {
+            const { payload } = await jwtVerify(token, secret);
+            decoded = payload;
+        } catch (err) {
+            return NextResponse.json({ error: "Invalid or expired token" }, { status: 401 });
+        }
+
+        const { id } = await params;
+
+        const deletedTask = await Task.findByIdAndDelete(id);
+
+        if (!deletedTask) {
+            return NextResponse.json({ error: "Task not found" }, { status: 404 });
+        }
+
+        return NextResponse.json(
+            {
+                success: true,
+                message: "Task deleted successfully",
+            },
+            { status: 200 }
+        );
+    } catch (err) {
+        console.error("Task deletion error:", err);
+        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    }
+}

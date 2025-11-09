@@ -19,7 +19,7 @@ export default function TaskRow({ task }) {
     const handleDelete = async (taskId) => {
         // console.log(taskId)
         try {
-            const response = await fetch(`/api/tasks?id=${taskId}`, {
+            const response = await fetch(`/api/tasks/${taskId}`, {
                 method: 'DELETE',
             });
     
@@ -69,9 +69,9 @@ export default function TaskRow({ task }) {
                     <Link href={`/tasks/${_id}`} passHref className="p-2 cursor-pointer text-neutral-800 dark:text-neutral-100 rounded hover:bg-gray-500 dark:hover:bg-gray-600 focus:outline-none">
                         <FaRegEye className="w-4 h-4"/>
                     </Link>
-                    <button className="p-2 cursor-pointer text-neutral-800 dark:text-neutral-100 rounded hover:bg-gray-500 dark:hover:bg-gray-600 focus:outline-none">
+                    <Link href={`/tasks/${_id}/edit`} className="p-2 cursor-pointer text-neutral-800 dark:text-neutral-100 rounded hover:bg-gray-500 dark:hover:bg-gray-600 focus:outline-none" passHref>
                         <FaRegEdit className="h-5 w-5" />
-                    </button>
+                    </Link>
                     <button onClick={() => modalRef.current.open()} className="p-2 cursor-pointer text-red-600 dark:text-red-400 rounded hover:bg-gray-500 dark:hover:bg-gray-600 focus:outline-none">
                         <FaRegTrashAlt className="h-5 w-5" />
                     </button>

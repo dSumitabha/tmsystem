@@ -40,11 +40,15 @@ export default function TaskEdit({ params }) {
   }, [params]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        <div>Loading...</div>
+      </div>
+    )
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <div className="min-h-screen">{error}</div>;
   }
 
   return (
