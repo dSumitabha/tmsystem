@@ -1,11 +1,13 @@
 "use client"
 
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { FaPowerOff } from 'react-icons/fa';
 import { toast } from 'sonner';
 
 export default function Header() {
+
+    const router = useRouter();
 
     const handleLogout = async () => {
         try {
@@ -16,7 +18,8 @@ export default function Header() {
     
             if (response.ok) {
                 toast.success('Logout successful!');
-                return redirect('/login');
+                router.push('/login');
+                // return redirect('/login');
             } else {
                 toast.error('Error logging out. Please try again.');
             }
