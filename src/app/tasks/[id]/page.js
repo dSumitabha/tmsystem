@@ -1,6 +1,6 @@
 "use client"
 import { use, useEffect, useState } from 'react';
-import TaskDetail from '@/app/components/TaskDetail';
+import TaskDetail from '@/components/TaskDetail';
 import { toast } from 'sonner';
 
 export default  function Page({ params }) {

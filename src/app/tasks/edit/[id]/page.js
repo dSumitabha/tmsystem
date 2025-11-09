@@ -1,4 +1,4 @@
-import TaskForm from "@/app/components/TaskForm";
+import TaskForm from "@/components/TaskForm";
 import { getUserFromToken } from "@/lib/getUserFromToken";
 import { redirect } from 'next/navigation';
 

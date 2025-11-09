@@ -2,7 +2,7 @@ import React from 'react';
 
 const TaskDetail = ({task}) => {
 
-    const formattedDueDate = new Date(dueDate).toLocaleDateString('en-US', {
+    const formattedDueDate = new Date(task.dueDate).toLocaleDateString('en-US', {
         month: 'short',
         day: 'numeric',
         year: 'numeric'

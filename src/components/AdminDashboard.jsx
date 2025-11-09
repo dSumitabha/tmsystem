@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import TaskRow from './TaskRow.jsx';
 import { toast } from 'sonner';
 import Link from 'next/link';
-import AssignUser from "./AssignUser"; 
+import AssignUser from "./AssignUser.jsx"; 
 
 export default function AdminDashboardContent() {
     const [tasks, setTasks] = useState([]);
