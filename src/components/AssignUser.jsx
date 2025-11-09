@@ -10,10 +10,30 @@ export default function AssignUser({ label, selectedUserId, onSelectUser }) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    const [debouncedQuery, setDebouncedQuery] = useState(query);
+    const [timeoutId, setTimeoutId] = useState(null);
+    
+    useEffect(() => {
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+        
+        const newTimeoutId = setTimeout(() => {
+            setDebouncedQuery(query); // this will trigger the actual API call
+        }, 500); // 500ms for debounce delay
+        
+        setTimeoutId(newTimeoutId);
+        
+        // clean up after mounted
+        return () => {
+            clearTimeout(newTimeoutId);
+        };
+    }, [query]); // for the query changes
+    
     // live search logic,I need to implement debounce here
     useEffect(() => {
-        if (query === "") {
-            // setUsers([]);
+        if (debouncedQuery === "") {
+            setUsers([]);
             return;
         }
 
@@ -21,7 +41,7 @@ export default function AssignUser({ label, selectedUserId, onSelectUser }) {
             setIsLoading(true);
             setError(null);
             try {
-                const response = await fetch(`/api/users?search=${encodeURIComponent(query)}`);
+                const response = await fetch(`/api/users?search=${encodeURIComponent(debouncedQuery)}`);
                 if (!response.ok) throw new Error("Failed to fetch users");
                 const data = await response.json();
                 setUsers(data.users || []);
@@ -34,7 +54,7 @@ export default function AssignUser({ label, selectedUserId, onSelectUser }) {
         };
 
         fetchUsers();
-    }, [query]);
+    }, [debouncedQuery]); // Trigger API call when debounced query changes
 
     const selectedUserObj = users.find((user) => user._id === selectedUserId) || selectedUser;
 
