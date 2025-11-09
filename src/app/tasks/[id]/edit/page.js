@@ -1,8 +1,9 @@
-import TaskForm from "@/components/TaskForm";
-import { getUserFromToken } from "@/lib/getUserFromToken";
+import TaskEdit from "@/components/TaskEdit";
 import { redirect } from 'next/navigation';
+import { getUserFromToken } from "@/lib/getUserFromToken";
 
-export default async function Page() {
+export default async function Page({params}) {
+    const { id } = await params;
     const user = await getUserFromToken();
 
     // if regular user try to access it 
@@ -12,6 +13,6 @@ export default async function Page() {
 
     // If the user is an admin, render the TaskForm component
     return (
-        <TaskForm />
+        <TaskEdit params={id}/>
     );
 }
