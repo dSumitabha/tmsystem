@@ -33,6 +33,11 @@ export async function POST(request) {
         try {
           const { payload } = await jwtVerify(token, secret);
           decoded = payload;
+
+            // only admin can create task
+            if (!decoded.isAdmin) {
+                return NextResponse.json({ error: "Forbidden: You are not authorized to perform this action" }, { status: 403 });
+            }
         } catch (err) {
           return NextResponse.json({ error: "Invalid or expired token" }, { status: 401 });
         }
@@ -104,6 +109,11 @@ export async function DELETE(request) {
         try {
             const { payload } = await jwtVerify(token, secret);
             decoded = payload;
+
+                // only admin can delete a task
+            if (!decoded.isAdmin) {
+                return NextResponse.json({ error: "Forbidden: You are not authorized to perform this action" }, { status: 403 });
+            }
         } catch (err) {
             return NextResponse.json({ error: "Invalid or expired token" }, { status: 401 });
         }
