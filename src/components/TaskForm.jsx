@@ -181,7 +181,7 @@ export default function TaskForm({ existingTask }) {
                             </select>
                         </div>
                     </div>
-                    <button type="submit" className="px-6 py-2 rounded-lg text-white font-medium bg-purple-700 hover:opacity-90 transition"> Create Task </button>
+                    <button type="submit" className="px-6 py-2 rounded-lg text-white font-medium bg-purple-700 hover:opacity-90 transition"> { isEditMode ? 'Update' : 'Create'} Task </button>
                 </form>
             </div>
         </div>
