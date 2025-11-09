@@ -1,11 +1,10 @@
-'use client';
+"use client"
 
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { FaPowerOff } from 'react-icons/fa';
 import { toast } from 'sonner';
 
 export default function Header() {
-    const router = useRouter();
 
     const handleLogout = async () => {
         try {
@@ -16,7 +15,7 @@ export default function Header() {
     
             if (response.ok) {
                 toast.success('Logout successful!');
-                router.push('/login');
+                return redirect('/login');
             } else {
                 toast.error('Error logging out. Please try again.');
             }
@@ -27,14 +26,14 @@ export default function Header() {
     };
 
     return (
-        <header className="sticky top-0 py-4 bg-slate-950 flex justify-between items-center">
-            <h1 className="text-white text-2xl font-bold pl-4">Task Management System</h1>
+        <header className="sticky top-0 py-2 bg-slate-100 dark:bg-slate-950 flex justify-between items-center px-4 border-b-2 border-purple-300 dark:border-purple-700">
+            <h1 className="text-neutral-900 dark:text-neutral-100 text-2xl font-bold">Task Management System</h1>
             <button
                 onClick={handleLogout}
-                className="text-white cursor-pointer text-xl p-2 rounded-full hover:bg-slate-800 transition"
+                className="text-neutral-950 dark:text-white cursor-pointer text-xl p-2 rounded bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 hover:dark:bg-slate-600 focus:outline-none transition"
                 title="Logout"
-            >
-                <FaPowerOff />
+            > Logout
+                <FaPowerOff className="ml-4 inline"/>
             </button>
         </header>
     );
