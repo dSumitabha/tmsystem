@@ -1,6 +1,6 @@
 import { getUserFromToken } from '@/lib/getUserFromToken';
-import AdminDashboard from "../components/AdminDashboard";
-import UserDashboard from "../components/UserDashboard";
+import AdminDashboard from "@/components/AdminDashboard";
+import UserDashboard from '@/components/UserDashboard';
 
 export default async function Home() {
 	const user = await getUserFromToken();

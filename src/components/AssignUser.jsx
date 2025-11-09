@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from "@headlessui/react";
 import { toast } from "sonner";
-import { useAssignUserContext } from "../app/context/AssignUserContext";
+import { useAssignUserContext } from "@/context/AssignUserContext";
 
 export default function AssignUser({ label, selectedUserId, onSelectUser }) {
     const [query, setQuery] = useState("");
