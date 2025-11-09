@@ -8,19 +8,27 @@ const SignUp = () => {
     const [email, setEmail] = useState("");
     const [fullName, setFullName] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [isAdmin, setIsAdmin] = useState(false);
+
     const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+        
         // Basic validation
         if (!email || !fullName || !password) {
             toast.error('Please fill in all fields');
             return;
         }
-    
+
+        if (password !== confirmPassword) {
+            toast.error('Passwords do not match');
+            return;
+        }
+
         setLoading(true);
         setErrorMessage('');
     
@@ -33,6 +41,8 @@ const SignUp = () => {
                 email,
                 fullName,
                 password,
+                confirmPassword,
+                isAdmin
             }),
         })
         .then(async (response) => {
@@ -111,6 +121,31 @@ const SignUp = () => {
                         placeholder="Enter your password"
                     />
                 </div>
+                <div>
+    <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Confirm Password</label>
+    <input
+        type="password"
+        id="confirmPassword"
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
+        required
+        className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:focus:ring-purple-400"
+        placeholder="Confirm your password"
+    />
+</div>
+
+<div className="flex items-center mt-4">
+    <input
+        type="checkbox"
+        id="isAdmin"
+        checked={isAdmin}
+        onChange={(e) => setIsAdmin(e.target.checked)}
+        className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+    />
+    <label htmlFor="isAdmin" className="ml-2 block text-sm font-medium text-gray-700 dark:text-gray-200">
+        Is Admin?
+    </label>
+</div>
                 {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
                 <button type="submit" className={`w-full py-2 px-4 text-white rounded-md 
                         ${loading ? 'bg-purple-600 dark:bg-purple-950 cursor-not-allowed' : 'bg-purple-700 dark:bg-purple-800 '} 

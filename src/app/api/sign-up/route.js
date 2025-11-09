@@ -8,7 +8,14 @@ export async function POST(request) {
   try {
     await connectDB();
 
-    const { fullName, email, password } = await request.json();
+    const { fullName, email, password, confirmPassword, isAdmin } = await request.json();
+
+    if (password !== confirmPassword) {
+      return NextResponse.json(
+        { error: 'Passwords do not match' },
+        { status: 400 }
+      );
+    }
 
     // Check if user already exists
     const existingUser = await User.findOne({
@@ -30,7 +37,7 @@ export async function POST(request) {
       fullName,
       email,
       password: hashedPassword,
-      isAdmin: false
+      isAdmin: isAdmin || false,
     });
 
     await newUser.save();
