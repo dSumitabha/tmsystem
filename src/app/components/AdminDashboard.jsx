@@ -61,7 +61,7 @@ export default function AdminDashboardContent() {
                 <div className="flex justify-between items-center py-4 px-6 border-b border-gray-200 dark:border-gray-700">
                     <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">Tasks</h2>
                     <div className="flex items-center space-x-4 ">
-                        <Link href="/create-task" passHref>
+                        <Link href="/tasks/new" passHref>
                             <button className="bg-purple-700 hover:bg-purple-800 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-300">
                                 Create Task
                             </button>
