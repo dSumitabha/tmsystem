@@ -4,6 +4,7 @@ import TaskRow from './TaskRow.jsx';
 import { toast } from 'sonner';
 import Link from 'next/link';
 import AssignUser from "./AssignUser.jsx"; 
+import TaskStatsChart from './TaskStatsChart.jsx';
 
 export default function AdminDashboardContent() {
     const [tasks, setTasks] = useState([]);
@@ -125,6 +126,11 @@ export default function AdminDashboardContent() {
                             )}
                         </tbody>
                     </table>
+                </div>
+            </section>
+            <section className=' shadow-sm rounded-xs mt-4'>
+                <div className="w-1/3">
+                    <TaskStatsChart />
                 </div>
             </section>
         </div>
