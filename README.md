@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Task Management System
 
-## Getting Started
+This is a role-based task management application built with **Next.js 16** and **MongoDB**.  
+It allows **admins** to create, assign, and manage tasks, while **users** can view and track their assigned tasks.  
+The project also includes mock data seed routes for quick demonstration on a fresh setup.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- JWT-based authentication using JOSE  
+- Role-based access control (Admin and User)  
+- Task creation, assignment, and update  
+- Dashboard with task statistics  
+- Mock data seeding for demo setup  
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Pages Overview
 
-## Learn More
+| Route | Description |
+|--------|-------------|
+| `/` | Dashboard (Admin/User) |
+| `/login` | User login |
+| `/sign-up` | User registration |
+| `/tasks/new` | Create a new task (Admin only) |
+| `/tasks/[id]` | Task details page |
+| `/tasks/[id]/edit` | Edit task (Admin only) |
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## API Endpoints
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Method | Endpoint | Description |
+|--------|-----------|-------------|
+| POST | `/api/login` | Login user |
+| POST | `/api/sign-up` | Register new user |
+| POST | `/api/logout` | Logout user |
+| POST | `/api/tasks` | Create new task (Admin) |
+| GET | `/api/tasks/create` | Get all tasks created by admin |
+| GET | `/api/tasks/assigned` | Get all tasks assigned to a user |
+| GET | `/api/tasks/[id]` | Get task details |
+| PUT | `/api/tasks/[id]` | Update task (Admin) |
+| DELETE | `/api/tasks/[id]` | Delete task (Admin) |
+| GET | `/api/tasks/stats` | Get task statistics for dashboard |
 
-## Deploy on Vercel
+Additional demo routes for mock data:
+- `/api/demonstrate/seed-users`
+- `/api/demonstrate/seed-tasks`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/dSumitabha/tmsystem.git
+
+2. **Navigate to the project directory**
+   cd tmsystem
+
+3. **Install dependencies**
+
+    npm install
+
+4. **Create a .env file with this fields**
+
+    MONGODB_URI=your_mongodb_connection_string
+    JWT_SECRET=your_secret_key
+
+5. **Run the Development Server**
+    npm run dev
