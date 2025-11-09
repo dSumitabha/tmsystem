@@ -30,7 +30,7 @@ export default function Header() {
             <h1 className="text-neutral-900 dark:text-neutral-100 text-2xl font-bold">Task Management System</h1>
             <button
                 onClick={handleLogout}
-                className="text-neutral-950 dark:text-white cursor-pointer text-xl p-2 rounded bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 hover:dark:bg-slate-600 focus:outline-none transition"
+                className="text-neutral-950 dark:text-white cursor-pointer text-md p-2 rounded bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 hover:dark:bg-slate-600 focus:outline-none transition"
                 title="Logout"
             > Logout
                 <FaPowerOff className="ml-4 inline"/>
