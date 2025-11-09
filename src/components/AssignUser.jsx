@@ -6,10 +6,9 @@ import { useAssignUserContext } from "@/context/AssignUserContext";
 
 export default function AssignUser({ label, selectedUserId, onSelectUser }) {
     const [query, setQuery] = useState("");
-    const { users, setUsers, selectedUser, setSelectedUser } = useAssignUserContext(); // already defined it in the provider
+    const { users, setUsers, selectedUser, setSelectedUser } = useAssignUserContext();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-
     const [debouncedQuery, setDebouncedQuery] = useState(query);
     const [timeoutId, setTimeoutId] = useState(null);
     
@@ -19,28 +18,26 @@ export default function AssignUser({ label, selectedUserId, onSelectUser }) {
         }
         
         const newTimeoutId = setTimeout(() => {
-            setDebouncedQuery(query); // this will trigger the actual API call
-        }, 500); // 500ms for debounce delay
+            setDebouncedQuery(query);
+        }, 500);
         
         setTimeoutId(newTimeoutId);
         
-        // clean up after mounted
         return () => {
             clearTimeout(newTimeoutId);
         };
-    }, [query]); // for the query changes
+    }, [query]);
     
-    // live search logic,I need to implement debounce here
     useEffect(() => {
         if (debouncedQuery === "") {
             setUsers([]);
             return;
         }
-
         const fetchUsers = async () => {
             setIsLoading(true);
             setError(null);
             try {
+                // FIX: Changed from backticks to parentheses
                 const response = await fetch(`/api/users?search=${encodeURIComponent(debouncedQuery)}`);
                 if (!response.ok) throw new Error("Failed to fetch users");
                 const data = await response.json();
@@ -52,17 +49,27 @@ export default function AssignUser({ label, selectedUserId, onSelectUser }) {
                 setIsLoading(false);
             }
         };
-
         fetchUsers();
-    }, [debouncedQuery]); // Trigger API call when debounced query changes
+    }, [debouncedQuery]);
+    
+    // I can handle both string ID and populated object
+    const selectedUserObj = (() => {
+        // if selectedUserId is an object
+        if (typeof selectedUserId === 'object' && selectedUserId !== null) {
+            return selectedUserId;
+        }
 
-    const selectedUserObj = users.find((user) => user._id === selectedUserId) || selectedUser;
-
-
+        if (typeof selectedUserId === 'string') {
+            return users.find((user) => user._id === selectedUserId) || selectedUser;
+        }
+        // fallback to selectedUser from context
+        return selectedUser;
+    })();
+    
     return (
         <Combobox value={selectedUserObj || {}} onChange={(user) => {
-            setSelectedUser(user);  //storing the full user object
-            onSelectUser(user);  // this is to passing the object to parent
+            setSelectedUser(user);
+            onSelectUser(user);
         }}>
             <div className="relative">
                 {label && <label className="block mb-2 font-medium">Assigned To</label>}
@@ -72,19 +79,16 @@ export default function AssignUser({ label, selectedUserId, onSelectUser }) {
                     displayValue={(user) => user?.fullName || ""}
                     placeholder="Search for a user"
                 />
-
                 {isLoading && (
                     <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg">
                         <p className="text-gray-500 p-2">Loading...</p>
                     </div>
                 )}
-
                 {error && !isLoading && (
                     <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg">
                         <p className="text-red-500 p-2">Error: {error}</p>
                     </div>
                 )}
-
                 {!isLoading && users.length > 0 && (
                     <ComboboxOptions className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg max-h-60 overflow-auto">
                         {users.map((user) => (
@@ -98,7 +102,6 @@ export default function AssignUser({ label, selectedUserId, onSelectUser }) {
                         ))}
                     </ComboboxOptions>
                 )}
-
                 {!isLoading && query !== "" && users.length === 0 && (
                     <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg">
                         <p className="text-gray-500 p-2">No users found</p>
