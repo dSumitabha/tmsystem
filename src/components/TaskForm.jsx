@@ -150,6 +150,7 @@ export default function TaskForm({ existingTask }) {
                                 value={formData.dueDate}
                                 onChange={handleChange}
                                 className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-2 bg-transparent focus:ring-2 focus:ring-purple-700 outline-none"
+                                required
                             />
                         </div>
                     </div>

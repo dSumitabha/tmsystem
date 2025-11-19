@@ -77,7 +77,7 @@ export default function AssignUser({ label, selectedUserId, onSelectUser }) {
                     className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-2 bg-transparent focus:ring-2 focus:ring-purple-700 outline-none"
                     onChange={(e) => setQuery(e.target.value)}
                     displayValue={(user) => user?.fullName || ""}
-                    placeholder="Search for a user"
+                    placeholder="Search for a user" required
                 />
                 {isLoading && (
                     <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg">
